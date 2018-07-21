@@ -29,6 +29,7 @@ yargs.alias('f', 'file')
     .alias('p', 'port')
 
 let argv = yargs.argv
+
 let {file, port} = argv
 
 start(path.resolve(file), port);
