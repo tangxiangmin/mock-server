@@ -16,7 +16,7 @@ yargs.option('f', {
     demand: true,
     default: './_mock.js',
     describe: 'mock template',
-    type: 'string'
+    // type: 'string'
 })
 
 // 默认参数

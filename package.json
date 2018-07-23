@@ -1,6 +1,6 @@
 {
   "name": "@shymean/mock-server",
-  "version": "1.0.5",
+  "version": "1.1.0",
   "description": "koa-mock-server ===",
   "main": "index.js",
   "scripts": {
@@ -13,9 +13,10 @@
     "mock": "./bin/index.js"
   },
   "dependencies": {
-    "@shymean/koa-mock": "^1.0.1",
+    "@shymean/koa-mock": "^1.1.0",
     "fs-extra": "^7.0.0",
     "koa": "^2.5.1",
+    "koa-bodyparser": "^4.2.1",
     "koa2-cors": "^2.0.6",
     "yargs": "^12.0.1"
   },
