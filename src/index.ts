@@ -2,10 +2,22 @@ let path = require('path')
 let yargs = require('yargs')
 let fs = require('fs-extra')
 
-
 // 启动服务器
 import server from './server'
-import util from './util'
+
+// 去抖函数
+function debounce(cb: Function, delay: number): Function {
+    let timer = null
+    return function () {
+        clearTimeout(timer)
+        let args = arguments,
+            context = this
+
+        timer = setTimeout(() => {
+            cb.apply(context, args)
+        }, delay);
+    }
+}
 
 let app = {
     init() {
@@ -55,7 +67,7 @@ let app = {
             }
         }
 
-        fs.watch(file, util.debounce(handler, 200));
+        fs.watch(file, debounce(handler, 200));
     },
     // 启动mock服务器
     startServer() {

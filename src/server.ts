@@ -1,32 +1,40 @@
 const fs = require("fs-extra")
-const Koa = require("koa")
+const Koa = require('koa')
 
-import core from './core/index'
+import middleware from './middleware'
+import mock from './mock'
 
-export default {
+interface Server {
+    server: Object,
+    isOpen: boolean,
+    start: (file: string, port: number) => void,
+    close: () => void
+}
+
+const server: Server = {
     server: null,
     isOpen: false,
-    start(file, port) {
-        fs.readFile(file, 'utf-8', (err, tpl) => {
-            const app = new Koa()
+    async start(file, port) {
+        const tpl = await fs.readFile(file, 'utf-8')
 
-            // 允许跨域
-            const cors = require("koa2-cors")
-            app.use(cors())
+        const app = new Koa()
+        const cors = require("koa2-cors")  // 允许跨域
+        app.use(cors())
 
-            {
-                // 注入相同的Mock对象
-                let Mock = core.Mock
-                Mock._urls = [] // 重置
-                let res = eval(tpl)
-            }
+        try {
+            let Mock = mock // 注入相同的Mock对象，方便在_mock模板文件中使用
+            Mock._urls = [] // 重置_
+            eval(tpl)
+        } catch (e) {
+            console.log(e)
+        }
 
-            app.use(core.middleware());
-            this.server = app.listen(port);
+        app.use(middleware); // 使用mock中间件处理响应
 
-            this.isOpen = true
-            console.log(`mock server listen at ${port}`);
-        })
+        this.server = app.listen(port);
+        console.log(`mock server listen at ${port}`);
+
+        this.isOpen = true
     },
     close() {
         return new Promise((resolve, reject) => {
@@ -37,4 +45,7 @@ export default {
         })
     },
 }
+export default server
+
+
 
