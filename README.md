@@ -21,6 +21,11 @@ mock -p 9999 -f ./_mock.js
 * 内部使用[@shymean/koa-mock`](https://www.npmjs.com/package/@shymean/koa-mock)，这是一个快速搭建koa的mock服务器的中间件
 * mock模板使用[mockjs语法](https://www.npmjs.com/package/mockjs)，并扩展了相关的功能
 
+### 基础使用
+其使用方式与mockjs基本类似
+* `Mock.mock(url, template)`
+* `Mock.mock(url, method, template)`
+
 ```js
 // _mock.js
 // 对应的rurl会被中间件拦截，并返回mock数据
@@ -62,8 +67,7 @@ Mock.mock("/test2", "jsonp", {
 });
 ```
 
-**自定义请求头匹配**
-
+### 自定义请求头匹配
 有时候某个相同的url请求，根据业务参数需要返回不同的模拟数据，因此提供了自定义匹配请求url的功能，需要在模板文件中实现`Mock.parseUrl`方法即可，该方法返回一个用于匹配的rurl
 
 ```js
@@ -75,7 +79,31 @@ Mock.parseUrl = function(ctx){
 Mock.mock('someUrl', {code: 0})
 ```
 
-**nginx配置**
+### 获取自定义请求详情
+在某些时候需要根据请求详情（如请求参数、cookie等）返回不同的模拟数据，因此提供了**函数模板**，其中`Koa`请求上下文将通过参数的方式注入
+
+```js
+Mock.mock(/auth/, (ctx) => {
+    let {uid} = ctx.query
+    if (uid) {
+        return {
+            code: 200,
+            msg: 'success',
+            data: {
+                uid
+            }
+        }
+    } else {
+        return {
+            code: 401,
+            msg: 'no uid',
+        }
+    }
+})
+```
+注：该功能看起来与上面提供的`parseUrl`方法比较类似，但区别在于：`parseUrl`主要用于批量指定解析rurl的模式，而函数模板主要用于针对单个url的请求动态返回模拟数据
+
+### nginx配置
 
 为了避免在业务代码中使用localhost域名，最佳实践方案是开发时将业务域名（如`xxx.test.com`）指向本地
 
@@ -102,6 +130,7 @@ server {
 * [x] 与mockjs浏览器端共用同一套mock模板，方便迁移和代码维护
 * [x] 支持jsonp请求
 * [x] 数据模板热更新，修改模板文件后，将自动重启服务器
+* [x] 根据请求信息，动态返回模板数据
 
 ## Todo
 * [ ] 支持映射本地文件，比如样式表、图片等

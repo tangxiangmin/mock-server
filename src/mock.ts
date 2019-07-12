@@ -17,9 +17,11 @@ interface baseConfig {
 
 // 导出Mock
 interface MockInterface {
-    mock: Function // 原始mock方法
+    _originMock: Function // 原始mock方法
+    mock: Function
     parseUrl?: (ctx: Context) => RegExp | string, // 配置Mock的解析方式，默认通过url方式解析，
     _urls: Array<baseConfig>, // 保存模板文件中定义的所有mock路由
+    _ctx: Context,
 }
 
 interface ObjMethod {
@@ -28,9 +30,9 @@ interface ObjMethod {
 }
 
 let Mock: MockInterface = mockjs
-let _originMock: Function = Mock.mock // 重写原始的Mock方法
-
 Mock._urls = []
+Mock._originMock = mockjs.mock
+// 重写Mock.mock方法，内部调用Mock._originMock
 Mock.mock = function (...args): void {
     let len = args.length
     let rurl = args[0]
@@ -74,6 +76,14 @@ Mock.mock = function (...args): void {
             break
     }
 
+    // 向模板注入请求ctx上下文
+    if (typeof template === 'function') {
+        let _originTemplate = template
+        template = () => {
+            return _originTemplate.call(Mock, Mock._ctx)
+        }
+    }
+
     Object.assign(config, {
         method,
         template
@@ -81,7 +91,7 @@ Mock.mock = function (...args): void {
 
     Mock._urls.push(config) // 保留所有的请求
 
-    return _originMock.apply(Mock, args)
+    return Mock._originMock.apply(Mock, args)
 }
 
 export default Mock

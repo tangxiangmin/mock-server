@@ -50,15 +50,14 @@ function getUrlConfig(pageMap, url, method) {
 // 根据配置获取响应数据
 function getMockData(config) {
     let {template, jsonpCallBack, fileUrl} = config
-    let data = template ? Mock.mock(template) : null
+    let data = template ? Mock._originMock(template) : null
 
     let response = data
     // 处理jsonp
     if (jsonpCallBack) {
         response = `${jsonpCallBack}(${JSON.stringify(data)});`
-    }
-    // 处理本地文件
-    else if (fileUrl) {
+    } else if (fileUrl) {
+        // 处理本地文件
         response = new Promise((resolve, reject) => {
             fs.readFile(fileUrl, 'utf-8', (err, content) => {
                 if (err) {
@@ -75,6 +74,8 @@ function getMockData(config) {
 
 
 const middleware = async function (ctx, next) {
+    Mock._ctx = ctx // 保存当前的请求上下文
+
     let url = formatUrl(ctx)
     let config = getUrlConfig(Mock._urls, url, ctx.method) // 根据url获取对应的配置数组
     let data

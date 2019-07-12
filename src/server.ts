@@ -23,6 +23,7 @@ const server: Server = {
 
         try {
             let Mock = mock // 注入相同的Mock对象，方便在_mock模板文件中使用
+
             Mock._urls = [] // 重置_
             eval(tpl)
         } catch (e) {
