@@ -1,4 +1,6 @@
 node_modules/
 .idea/
-./_mock.js
+dist/
+
+_mock.js
 shymean-mock-server-*.tgz

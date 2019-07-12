@@ -4,8 +4,8 @@ let fs = require('fs-extra')
 
 
 // 启动服务器
-let server = require('./src/server')
-let util = require('./src/util')
+import server from './server'
+import util from './util'
 
 let app = {
     init() {

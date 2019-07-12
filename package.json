@@ -1,25 +1,43 @@
 {
   "name": "@shymean/mock-server",
   "version": "1.1.1",
-  "description": "koa-mock-server ===",
+  "description": "Local mock data server setup by Koa.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha",
+    "build": "tsc src/index.ts --outDir dist",
+    "pack": "npm run build && npm pack"
   },
-  "keywords": [],
-  "author": "",
+  "keywords": [
+    "koa",
+    "mock",
+    "mockdata"
+  ],
+  "author": "shymean",
   "license": "ISC",
   "bin": {
     "mock": "./bin/index.js"
   },
+  "files": [
+    "bin/*",
+    "dist/*"
+  ],
   "dependencies": {
-    "@shymean/koa-mock": "^1.1.1",
     "fs-extra": "^7.0.0",
     "koa": "^2.5.1",
     "koa2-cors": "^2.0.6",
+    "mockjs": "^1.0.1-beta3",
     "yargs": "^12.0.1"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "@types/chai": "^4.1.7",
+    "@types/mocha": "^5.2.7",
+    "@types/node": "^12.6.2",
+    "chai": "^4.2.0",
+    "mocha": "^6.1.4",
+    "ts-node": "^8.3.0",
+    "typescript": "^3.5.3"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/tangxiangmin/mock-server.git"

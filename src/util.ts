@@ -2,9 +2,9 @@
  * 2018/7/28 下午11:30
  */
 
-module.exports = {
+export default {
     // 去抖函数
-    debounce(cb, delay) {
+    debounce(cb: Function, delay: number) {
         let timer = null
         return function () {
             clearTimeout(timer)

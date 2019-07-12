@@ -1,7 +1,9 @@
 const fs = require("fs-extra")
 const Koa = require("koa")
 
-module.exports = {
+import core from './core/index'
+
+export default {
     server: null,
     isOpen: false,
     start(file, port) {
@@ -12,16 +14,14 @@ module.exports = {
             const cors = require("koa2-cors")
             app.use(cors())
 
-            const mockMiddleware = require("@shymean/koa-mock")
-
             {
                 // 注入相同的Mock对象
-                let Mock = mockMiddleware.Mock
+                let Mock = core.Mock
                 Mock._urls = [] // 重置
                 let res = eval(tpl)
             }
 
-            app.use(mockMiddleware());
+            app.use(core.middleware());
             this.server = app.listen(port);
 
             this.isOpen = true
