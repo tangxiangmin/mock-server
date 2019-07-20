@@ -1,6 +1,6 @@
 {
   "name": "@shymean/mock-server",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "Local mock data server setup by Koa.",
   "main": "index.js",
   "scripts": {
@@ -30,6 +30,7 @@
     "@types/koa": "^2.0.49",
     "fs-extra": "^7.0.0",
     "koa": "^2.5.1",
+    "koa-body": "^4.1.0",
     "koa2-cors": "^2.0.6",
     "mockjs": "^1.0.1-beta3",
     "yargs": "^12.0.1"

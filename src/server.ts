@@ -21,6 +21,11 @@ const server: Server = {
         const cors = require("koa2-cors")  // 允许跨域
         app.use(cors())
 
+        const bodyParser = require('koa-body');
+        app.use(bodyParser({
+            multipart: true,
+        }));
+
         try {
             let Mock = mock // 注入相同的Mock对象，方便在_mock模板文件中使用
 

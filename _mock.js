@@ -12,9 +12,11 @@ Mock.mock(/index/, {
     }
 })
 
-Mock.mock(/test/,'POST',function(options){
-    console.log(options)
-    // return options
+Mock.mock(/test/,'POST',function(ctx){
+    return {
+        body: ctx.request.body,
+        query: ctx.request.query,
+    }
 })
 
 Mock.mock(/req/, (ctx) => {
