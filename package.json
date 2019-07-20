@@ -1,6 +1,6 @@
 {
   "name": "@shymean/mock-server",
-  "version": "1.1.1",
+  "version": "1.2.0",
   "description": "Local mock data server setup by Koa.",
   "main": "index.js",
   "scripts": {
@@ -21,7 +21,10 @@
   },
   "files": [
     "bin/*",
-    "dist/*"
+    "dist/*",
+    "src/*",
+    "README.md",
+    "package.json"
   ],
   "dependencies": {
     "@types/koa": "^2.0.49",

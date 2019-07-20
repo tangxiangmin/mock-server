@@ -12,7 +12,13 @@ Mock.mock(/index/, {
     }
 })
 
+Mock.mock(/test/,'POST',function(options){
+    console.log(options)
+    // return options
+})
+
 Mock.mock(/req/, (ctx) => {
+    return ctx
     let {uid} = ctx.query
     if (uid) {
         return {
