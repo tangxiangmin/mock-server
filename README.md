@@ -102,6 +102,23 @@ Mock.mock(/auth/, (ctx) => {
 })
 ```
 注：该功能看起来与上面提供的`parseUrl`方法比较类似，但区别在于：`parseUrl`主要用于批量指定解析rurl的模式，而函数模板主要用于针对单个url的请求动态返回模拟数据
+### loadModule
+
+由于内部使用`eval`执行模板文件，因此在模板文件中使用`require`导入的其他模块（如很大一段JSON模拟数据）路径可能存在问题，
+
+解决办法是使用`process.cwd()`+`path.resolve`显式指定模块路径
+```js
+const path = require('path')
+let list = require(path.resolve(process.cwd(), './example/list.json'))
+
+Mock.mock(/list/, {data:list})
+```
+
+因此，工具内置了`Mock.loadModule`方法，用于导入其他模块
+```js
+let list = Mock.loadModule('./example/list.json')
+Mock.mock(/list/, {data:list})
+```
 
 ### nginx配置
 

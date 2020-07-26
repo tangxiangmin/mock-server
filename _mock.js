@@ -2,7 +2,7 @@
  * 2019-07-12 14:35
  */
 
-
+let list = Mock.loadModule('./example/list.json')
 
 Mock.mock(/index/, {
     code: 200,
@@ -12,7 +12,7 @@ Mock.mock(/index/, {
     }
 })
 
-Mock.mock(/test/,'POST',function(ctx){
+Mock.mock(/test/, 'POST', function (ctx) {
     return {
         body: ctx.request.body,
         query: ctx.request.query,

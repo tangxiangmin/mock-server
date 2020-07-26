@@ -1,6 +1,6 @@
 {
   "name": "@shymean/mock-server",
-  "version": "1.2.1",
+  "version": "1.3.0",
   "description": "Local mock data server setup by Koa.",
   "main": "index.js",
   "scripts": {

@@ -4,6 +4,7 @@
 import {Context} from "koa";
 
 import * as mockjs from 'mockjs'
+import * as path from 'path'
 
 // 每一个mock路由保存的信息
 interface baseConfig {
@@ -22,6 +23,7 @@ interface MockInterface {
     parseUrl?: (ctx: Context) => RegExp | string, // 配置Mock的解析方式，默认通过url方式解析，
     _urls: Array<baseConfig>, // 保存模板文件中定义的所有mock路由
     _ctx: Context,
+    loadModule: Function
 }
 
 interface ObjMethod {
@@ -92,6 +94,13 @@ Mock.mock = function (...args): void {
     Mock._urls.push(config) // 保留所有的请求
 
     return Mock._originMock.apply(Mock, args)
+}
+
+
+// 在模板文件中加载其他模块
+Mock.loadModule = (url) => {
+    let modulePath = path.resolve(process.cwd(), url);
+    return require(modulePath)
 }
 
 export default Mock

@@ -2,5 +2,5 @@ node_modules/
 .idea/
 dist/
 
-_mock.js
+#_mock.js
 shymean-mock-server-*.tgz
